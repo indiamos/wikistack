@@ -1,5 +1,5 @@
- const express = require('express');
- const router = express.Router();
+const express = require('express');
+const router = express.Router();
 var models = require('../views/models');
 var Page = models.Page;
 var User = models.User;
@@ -22,6 +22,21 @@ router.post('/', function(req, res){
 
 router.get('/add', function(req, res, next){
   res.render('addpage.html');
+});
+
+router.get('/:urlTitle', function (req, res, next) {
+  Page.findAll({
+    where: {
+      urlTitle: req.params.urlTitle
+    }
+  })
+  .then(foundPage => {
+    // .urlTitle
+      res.render('wikipage.html', {page: foundPage});
+  })
+  .catch(err => {
+    console.log(err);
+  });
 });
 
 //
