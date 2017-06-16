@@ -1,7 +1,7 @@
 {
   "name": "wikistack",
   "version": "1.0.0",
-  "description": "",
+  "description": "This lovely Wikipedia-like application will have the following features: (1) A homepage that lists all the pages in our Wiki. (2) The ability to create new pages, and write them in Markdown using the marked module. (3) Open page editing (no login for now). (4) Page searching. (5) Tagging. (6) Bonus: version history, discussion tab on each page.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
