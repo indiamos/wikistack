@@ -11,9 +11,9 @@ var Page = db.define('page', {
   urlTitle: {
     type: Sequelize.STRING,
     allowNull: false,
-    validate: {
-      is: /^[a-z_\-]+$/i
-    }
+    // validate: {
+    //   is: /^[a-z_\-]+$/i
+    // }
   },
   content: {
     type: Sequelize.TEXT,
@@ -26,17 +26,20 @@ var Page = db.define('page', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
   },
-  getterMethods: {
-    route() {
-      return '/wiki/' + this.urlTitle
-    }
-  },
-  setterMethods: {
-    route(value) {
-      this.setDataValue('urlTitle', names.slice(5));
+  route: {
+    type: Sequelize.VIRTUAL,
+    get: function() {
+      return '/wiki/' + this.urlTitle;
+    },
+    set: function(value) {
+      this.setDataValue('urlTitle', value.slice(5));
     }
   }
 });
+
+Page.hook('beforeValidate', function(page, options){
+  page.urlTitle = generateURL(page.title);
+})
 
 var User = db.define('user', {
   name: {
@@ -51,6 +54,12 @@ var User = db.define('user', {
     }
   }
 });
+
+function generateURL(title){
+      if (title) return title.replace(/\s+/g, '_').replace(/\W/g, '');
+      else return Math.random().toString(36).substring(2, 7);
+    }
+
 
 module.exports = {
   db: db,
