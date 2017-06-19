@@ -11,8 +11,6 @@ const models = require('./views/models');
 // logging middleware
 app.use(morgan('dev'));
 
-app.use(express.static('/public'));
-
 // templating boilerplate setup
 app.engine('html', nunjucks.render); // how to render html templates
 app.set('view engine', 'html'); // what file extension do our templates have
@@ -22,9 +20,11 @@ var env = nunjucks.configure('views', { noCache: true }); // where to find the v
 app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
 app.use(bodyParser.json()); // would be for AJAX requests
 
+app.use(express.static('public'));
+
 app.use('/', routes);
 
-models.User.sync({})
+models.User.sync({  })
   .then(function() {
     return models.Page.sync({});
   })
