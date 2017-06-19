@@ -24,7 +24,7 @@ app.use(express.static('public'));
 
 app.use('/', routes);
 
-models.User.sync({})
+models.User.sync({ force: true })
   .then(function() {
     return models.Page.sync({});
   })

@@ -11,15 +11,29 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next){
   console.log(req.body);
-  var page = Page.build({
-    title: req.body.title,
-    status: req.body.status,
-    content: req.body.content
-//    urlTitle: encodeURI(req.body.title)
-  });
-  page.save()
-  .then(savedPage => {
-    res.redirect(savedPage.route); // route virtual FTW
+
+  User.findOrCreate({
+      where: {
+        name: req.body.name,
+        email: req.body.email
+      }
+    })
+  .then(function (values, next) {
+    var user = values[0];
+
+    var page = Page.build({
+      title: req.body.title,
+      content: req.body.content
+    });
+
+    return page.save().then(function (page) {
+      return page.setAuthor(user);
+    });
+    next();
+  })
+  .then(function (page, next) {
+    res.redirect(page.route);
+    next();
   })
   .catch(next);
 });
