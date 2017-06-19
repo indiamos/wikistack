@@ -56,7 +56,7 @@ var User = db.define('user', {
 });
 
 function generateURL(title){
-      if (title) return title.replace(/\s+/g, '_').replace(/\W/g, '');
+      if (title) return title.replace(/\s+/g, '_').replace(/\W/g, '').toLowerCase();
       else return Math.random().toString(36).substring(2, 7);
     }
 
