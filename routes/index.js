@@ -12,8 +12,6 @@ router.use('/users', userRouter);
 router.get('/', function(req, res, next){
   Page.findAll()
   .then(function(listOfPages) {
-    // res.json(listOfPages);
-
     res.render('index.html', {pages: listOfPages});
   })
   .catch(err => {

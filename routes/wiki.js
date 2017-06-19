@@ -6,7 +6,7 @@ var User = models.User;
 
 router.get('/', function(req, res, next) {
   res.redirect('/');
-  next();
+ // next();
 });
 
 router.post('/', function(req, res, next){
@@ -29,33 +29,39 @@ router.post('/', function(req, res, next){
     return page.save().then(function (page) {
       return page.setAuthor(user);
     });
-    next();
   })
   .then(function (page, next) {
     res.redirect(page.route);
-    next();
   })
   .catch(next);
 });
 
 router.get('/add', function(req, res, next){
   res.render('addpage.html');
-  next();
 });
 
 router.get('/:urlTitle', function (req, res, next) {
   let url = req.params.urlTitle.toLowerCase();
   Page.findOne({
-    where: {
-      urlTitle: url
+    where: { urlTitle: url },
+      include: [{model: User, as: 'author'}]
+  })
+.then(function (page) {
+    // page instance will have a .author property
+    // as a filled in user object ({ name, email })
+    if (page === null) {
+        res.status(404).send();
+    } else {
+        res.render('wikipage', { page: page});
     }
-  })
-  .then(function(foundPage) {
-      res.render('wikipage.html', {page: foundPage});
-  })
+})
   .catch(err => {
     console.log(err);
   });
+});
+
+router.get('/users/:id', function(req, res, next) {
+  res.redirect('/users/'+ req.params.id);
 });
 
 //

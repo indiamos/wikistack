@@ -7,8 +7,6 @@ var User = models.User;
 router.get('/',function(req, res, next) {
   User.findAll({})
   .then(function(listOfUsers) {
-    // res.json(listOfUsers);
-
     res.render('users.html', {users: listOfUsers});
   })
   .catch(next);

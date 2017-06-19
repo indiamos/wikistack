@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h3><a href="users/{{user.id}}">{{user.name}}</a></h3>
-  <p><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+  <h3><a href="{{users.id}}">{{users.name}}</a></h3>
+  <p><a href="mailto:{{users.email}}">{{users.email}}</a></p>
   <hr/>
   <ul class="list-unstyled">
     {% for page in pages %}
